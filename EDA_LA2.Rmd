@@ -1,6 +1,6 @@
 ---
 title: "EDA_LA2"
-author: "Sanjay_Amith"
+author: "SAI SANJAY 1NT19IS047 Amith MM 1NT19IS017"
 date: '2022-07-03'
 output:
   html_document: default
