@@ -1,0 +1,561 @@
+---
+title: "EDA_LA2"
+author: "Sanjay_Amith"
+date: '2022-07-03'
+output:
+  html_document: default
+  word_document: default
+---
+## Loading Data
+```{r}
+netflix_data=read.csv("/home/sanjana/Downloads/NetflixOriginals.csv",header=TRUE,sep=",")
+```
+```{r}
+head(netflix_data,n=20)
+```
+# # EXPLORING DATA
+# # Creating a Scatter Plot
+```{r}
+plot(netflix_data$IMDB.Score, netflix_data$runtime)
+```
+ With ggplot2, you can get a similar result using the ggplot() function 
+```{r}
+library(ggplot2)
+ggplot(netflix_data, aes(x = IMDB.Score, y =Runtime )) +
+geom_point()
+```
+ The first part, ggplot(), tells it to create a plot object, and the second part,
+
+
+# # Creating a Line Graph
+
+```{r}
+plot(pressure$temperature, pressure$pressure, type = "l")
+```
+```{r}
+plot(netflix_data$IMDB.Score, netflix_data$runtime, type = "l")
+points(netflix_data$IMDB.Score, netflix_data$runtime)
+```
+
+With ggplot2, you can get a similar result using geom_line()
+```{r}
+library(ggplot2)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_line()
+```
+```{r}
+library(ggplot2)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_line()+geom_point()
+  
+```
+
+
+
+
+# # Creating a Bar Graph
+```{r}
+
+
+```
+With ggplot2, you can get a similar result using geom_col()
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_col()
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score)) +
+geom_bar()
+```
+```{r}
+
+```
+# # Creating a Histogram
+```{r}
+hist(netflix_data$IMDB.Score, breaks = 10)
+```
+ With wider bins
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score)) +
+geom_histogram(binwidth = 4)
+```
+# # Creating a Box Plot
+
+With the ggplot2 package, you can get a similar result (Figure 2-11, left) with
+geom_boxplot():
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_boxplot()
+```
+
+```{r}
+curve(x^3 - 5*x, from = -4, to = 4)
+```
+With ggplot2, you can get a similar result (Figure 2-13), by using stat_func
+tion(geom = "line")
+Using add = TRUE will add a
+curve to the previously created plot:
+```{r}
+myfun <- function(xvar) {
+1 / (1 + exp(-xvar + 10))
+}
+curve(myfun(x), from = 0, to = 20)
+curve(1 - myfun(x), add = TRUE, col = "red")
+```
+```{r}
+
+# This sets the x range from 0 to 20
+ggplot(data.frame(x = c(0, 20)), aes(x = x)) +
+stat_function(fun = myfun, geom = "line")
+```
+# # Making a Basic Bar Graph
+You have a data frame where one column represents the x position of each bar, and
+another column represents the vertical (y) height of each bar.
+Use ggplot() with geom_col()
+```{r}
+library(gcookbook)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_col()
+
+```
+
+```{r}
+head(netflix_data)
+```
+```{r}
+ggplot(netflix_data, aes(x = Runtime, y = IMDB.Score)) +
+geom_col()
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_col()
+```
+# Convert Time to a discrete (categorical) variable with factor()
+```{r}
+ggplot(netflix_data, aes(x = factor(Runtime), y = IMDB.Score)) +
+geom_col()
+```
+we use a light blue fill and a black outline
+```{r}
+ggplot(netflix_data, aes(x = Runtime, y = IMDB.Score)) +
+geom_col(fill = "lightblue", colour = "black")
+```
+# # Grouping Bars Together
+```{r}
+library(gcookbook)
+ggplot(netflix_data, aes(x = IMDB.Score, y = IMDB.Score, fill = Runtime))
+```
+# #Making a Bar Graph of Counts
+```{r}
+ggplot(netflix_data, aes(x = Runtime)) +
+geom_bar()
+```
+# #Using Colors in a Bar Graph
+You want to use different colors for the bars in your graph
+```{r}
+library(gcookbook)
+library(dplyr)
+upc<- netflix_data  %>%
+arrange(desc(IMDB.Score)) %>%
+slice(1:10)
+```
+```{r}
+ggplot(upc, aes(x = Genre, y = IMDB.Score, fill = Language)) +
+geom_col()
+```
+```{r}
+
+library(dplyr)
+ggplot(upc, aes(x = reorder(Genre, IMDB.Score), y = IMDB.Score, fill = Language)) +
+geom_col(colour = "black") 
+  
+
+```
+# #
+```{r}
+climate_sub <- netflix_data %>%
+filter(Language == "English" & Runtime >= 80) %>%
+mutate(pos = IMDB.Score >= 0)
+```
+```{r}
+ggplot(climate_sub, aes(x = Genre, y = IMDB.Score, fill = pos)) +
+geom_col(position = "identity")
+```
+```{r}
+ggplot(climate_sub, aes(x = Genre, y = IMDB.Score, fill = pos)) +
+geom_col(position = "identity", colour = "black", size = 0.25) +
+scale_fill_manual(values = c("#CCEEFF", "#FFDDDD"), guide = FALSE)
+```
+# # Adjusting Bar Width and Spacing
+```{r}
+library(gcookbook)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_col()
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_col(width =0.5)
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, fill = Language)) +
+geom_col(width = 0.5, position = "dodge")
+```
+# # Making a Stacked Bar Graph
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, fill = Language)) +
+geom_col()
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, fill = Language)) +
+geom_col()+guides(fill = guide_legend(reverse = TRUE))
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, fill = Language))+geom_col(colour = "black") +
+scale_fill_brewer(palette = "Pastel1")
+```
+# # Adding Labels to a Bar Graph
+```{r}
+library(gcookbook)
+ggplot(netflix_data, aes(x = interaction( Language,IMDB.Score), y = IMDB.Score)) +
+geom_col() +
+geom_text(aes(label = IMDB.Score), vjust = 1.5, colour = "white")
+```
+```{r}
+ggplot(netflix_data, aes(x = factor(Runtime))) +
+geom_bar() +
+geom_text(aes(label = ..count..), stat = "count", vjust = 1.5,
+colour = "white")
+```
+```{r}
+ce <- netflix_data %>%
+arrange(Language, rev(Title))
+```
+
+# # Making a Cleveland Dot Plot
+```{r}
+library(gcookbook) 
+tophit <- netflix_data[1:25, ]
+ggplot(tophit, aes(x = IMDB.Score, y = Genre)) +
+geom_point()
+```
+```{r}
+ggplot(tophit, aes(x = IMDB.Score, y = reorder(Title, IMDB.Score))) +
+geom_point(size = 3) +
+theme_bw() +
+theme(
+panel.grid.major.x = element_blank(),
+panel.grid.minor.x = element_blank(),
+panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+)
+```
+# #Making a Basic Scatter Plot
+```{r}
+library(gcookbook) 
+library(dplyr)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_point()
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_point(shape=21)
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_point(size=1.5)
+```
+Grouping Points Together Using Shapes or Colors
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, shape = Language, colour = Language)) +
+geom_point()
+```
+# #Using Different Point Shapes
+You want to change the default scatter plot shapes for the data points.
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_point(shape=3 )
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, shape =Language )) +
+geom_point(size = 3) 
+
+```
+```{r}
+hw <- netflix_data %>%
+mutate(weightgroup = ifelse(Runtime < 50, "< 50", ">= 50"))
+```
+# # Mapping a Continuous Variable to Color or Size
+# You want to represent a third continuous variable using color or size.
+A basic scatter plot shows the relationship between two continuous variables: one
+mapped to the x-axis, and one to the y-axis. When there are more than two continuous
+variables, these additional variables must be mapped to other aesthetics, like size
+and colour.
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, colour = Runtime)) +
+geom_point()
+```
+```{r}
+range(netflix_data$IMDB.Score)
+#> [1] 50.5 171.5
+size_range <- range(netflix_data$IMDB.Score) / max(netflix_data$IMDB.Score) * 6
+size_range
+```
+you want the diameter of the
+points to represent the data values, or if you want the area of the points to represent
+the data values.
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, size = IMDB.Score)) +
+geom_point() +
+scale_size_continuous(range = size_range)
+```
+
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, size = Runtime)) +
+geom_point() +
+scale_size_area()
+```
+When it comes to color, there are actually two aesthetic attributes that can be used:
+colour and fill
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime, fill = Runtime)) +
+geom_point(shape = 21,size=2.5)+
+  scale_fill_gradient(
+low = "black", high = "white",
+breaks = seq(70, 170, by = 20),
+guide = guide_legend()
+)
+```
+# #Dealing with Overplotting
+You have many points that overlap and obscure each other when plotted
+```{r}
+diamonds_sp <- ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime))
+diamonds_sp +
+geom_point()
+
+```
+```{r}
+diamonds_sp +
+geom_point(alpha = .1)
+```
+```{r}
+diamonds_sp +
+geom_point(alpha = .01)
+```
+# #Adding Fitted Regression Model Lines
+You want to add lines from a fitted regression model to a scatter plot
+```{r}
+hw_sp <- ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime))
+hw_sp +
+geom_point() +
+stat_smooth(method = lm)
+```
+```{r}
+hw_sp +
+geom_point() +
+stat_smooth(method = lm, level = 0.99)
+```
+```{r}
+hw_sp +
+geom_point(colour = "grey60") +
+stat_smooth(method = lm, se = FALSE, colour = "black")
+```
+```{r}
+hw_sp +
+  geom_point(colour = "grey60") +
+stat_smooth(method = loess)
+```
+```{r}
+library(MASS)
+ggplot(netflix_data, aes(x = IMDB.Score, y = Runtime)) +
+geom_point(
+position = position_jitter(width = 0.3, height = 0.06),
+alpha = 0.4,
+shape = 21,
+size = 1.5
+) +
+stat_smooth(method = glm, method.args = list(family = binomial))
+```
+```{r}
+hw_sp +
+geom_smooth(method = lm, se = FALSE, fullrange = TRUE)
+```
+# # Adding Marginal Rugs to a Scatter Plot
+You want to add marginal rugs to a scatter plot
+```{r}
+ggplot(faithful, aes(x = eruptions, y = waiting)) +
+geom_point() +
+geom_rug()
+```
+```{r}
+ggplot(faithful, aes(x = eruptions, y = waiting)) +
+geom_point() +
+geom_rug(position = "jitter", size = 0.2)
+```
+
+##Making a Basic Histogram
+```{r}
+library(ggplot2)
+
+ggplot(netflix_data, aes(x = Runtime)) +
+geom_histogram(binwidth = 5,fill = "white", colour = "black")
+```
+##Making Multiple Histograms from Grouped Data
+
+
+```{r}
+install.packages("MASS")
+library(MASS)
+library(ggplot2)
+ggplot(birthwt, aes(x = bwt)) +
+  geom_histogram(fill = "white", colour = "black") +
+facet_grid(smoke ~ .)
+```
+
+##Making a Density Curve
+```{r}
+library(ggplot2)
+ggplot(netflix_data, aes(x = IMDB.Score)) +
+geom_density()
+
+```
+```{r}
+ggplot(netflix_data, aes(x = IMDB.Score)) +
+geom_line(stat = "density") +
+expand_limits(y = 0)
+```
+```{r}
+library(ggplot2)
+ggplot(netflix_data,aes(x = Runtime)) +
+geom_line(stat= "density") +
+
+geom_line(stat= "density", adjust = .25, colour = "red") +
+
+geom_line(stat= "density", adjust = 2, colour = "blue")
+```
+```{r}
+ggplot(netflix_data, aes(x = Runtime)) +
+geom_density(fill = "blue", alpha = .2, colour = NA) +
+xlim(35, 105) +
+geom_line(stat = "density")
+```
+```{r}
+library(MASS)
+library(ggplot2)
+birthwt_mod <- birthwt
+ggplot(birthwt_mod, aes(x = bwt, fill = smoke)) +
+geom_histogram(position = "identity", alpha = 0.4)
+```
+##Combineing both density and histogram
+```{r}
+ggplot(netflix_data, aes(x = Runtime, y = ..density..)) +
+geom_histogram(fill = "cornsilk", colour = "grey60", size = .2) +
+geom_density() +
+xlim(35, 105)
+```
+###Making Multiple Density Curves from Grouped Data
+```{r}
+ggplot(netflix_data, aes(x = Language, fill = as.numeric(IMDB.Score))) +
+geom_density(alpha = .3)
+```
+```{r}
+ggplot(birthwt_mod, aes(x = bwt)) +
+geom_density() +
+facet_grid(smoke ~ .)
+```
+```{r}
+birthwt_mod <- birthwt
+ggplot(birthwt_mod, aes(x = bwt, y = ..density..)) +
+geom_histogram(binwidth = 200, fill = "cornsilk", colour = "grey60",
+size = .2) +
+geom_density() +
+facet_grid(smoke ~ .)
+```
+##Making a Frequency Polygon
+```{r}
+ggplot(netflix_data, aes(x=Runtime)) +
+geom_freqpoly()
+```
+
+##Making a Basic Box Plot
+```{r}
+library(MASS)
+ggplot(birthwt, aes(x = factor(race), y = bwt)) +
+geom_boxplot()
+```
+##Adding Notches to a Box Plot
+```{r}
+ggplot(birthwt, aes(x = factor(race), y = bwt)) +
+geom_boxplot(notch = TRUE)
+```
+##Adding Means to a Box Plot
+```{r}
+ggplot(birthwt, aes(x = factor(race), y = bwt)) +
+geom_boxplot() +
+stat_summary(fun.y = "mean", geom = "point", shape = 23, size = 3,
+fill = "white")
+```
+##Making a Violin Plot
+```{r}
+library(gcookbook)
+hw_p <- ggplot(heightweight, aes(x = sex, y = heightIn))
+hw_p +
+geom_violin()
+```
+```{r}
+hw_p +
+geom_violin() +
+geom_boxplot(width = .1, fill = "black", outlier.colour = NA) +
+stat_summary(fun.y = median, geom = "point", fill = "white", shape = 21,
+size = 2.5)
+```
+```{r}
+hw_p <- ggplot(heightweight, aes(x = sex, y = heightIn))
+hw_p +
+geom_violin(adjust = 2)
+hw_p +
+geom_violin(adjust = 0.5)
+```
+
+##Making a Dot Plot
+```{r}
+library(ggplot2)
+library(dplyr)
+netflix<- netflix_data %>%
+filter(Language == 'English' & Runtime > 50)
+# Create a base ggplot object using `c2009`, called `c2009_p` (for c2009 plot)
+net <- ggplot(netflix, aes(x = as.numeric(IMDB.Score)))
+net +
+geom_dotplot()
+```
+##Making Multiple Dot Plots for Grouped Data
+```{r}
+library(ggplot2)
+ggplot(netflix_data, aes(x =Language, y = as.numeric(IMDB.Score))) +
+geom_dotplot(binaxis = "y", binwidth = .5, stackdir = "center"
+)
+```
+```{r}
+ggplot(heightweight, aes(x = sex, y = heightIn)) +
+geom_boxplot(aes(x = as.numeric(sex) + .2, group = sex), width = .25) +
+geom_dotplot(
+aes(x = as.numeric(sex) - .2, group = sex),
+binaxis = "y",
+binwidth = .5,
+stackdir = "center"
+) +
+scale_x_continuous(
+breaks = 1:nlevels(heightweight$sex),
+labels = levels(heightweight$sex)
+)
+```
+##Making a Density Plot of Two-Dimensional Data
+```{r}
+library(ggplot2)
+faithful_p <- ggplot(netflix_data, aes(x = Runtime, y = IMDB.Score))
+faithful_p +
+geom_point() +
+stat_density2d()
+```
+```{r}
+faithful_p +
+stat_density2d(aes(colour = ..level..))
+```
